@@ -41,6 +41,7 @@ fi
 cd "$ROOT_PATH" || say_error || exit 1
 git pull || say_error || exit 1
 if [ "$PULL_ONLY" -eq 0 ]; then
+    git add .
     git commit -a -m 'phone updates'
     git push || say_error || exit 1
 fi
