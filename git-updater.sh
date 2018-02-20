@@ -30,8 +30,12 @@ fi
 
 . ~/.bashrc
 
-find "$ROOT_PATH" -newer "$TOUCH_PATH" | egrep -q '.*'
-NO_NEW_FILES="$?"
+if [ -e "$TOUCH_PATH" ]; then 
+    find "$ROOT_PATH" -newer "$TOUCH_PATH" | egrep -q '.*'
+    NO_NEW_FILES="$?"
+else
+    NO_NEW_FILES=0
+fi
 
 if [ "$NO_NEW_FILES" -eq 1 ] && [ "$FORCE" -eq 0 ]; then
     say_ok;
