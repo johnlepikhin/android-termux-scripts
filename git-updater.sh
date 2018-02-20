@@ -3,14 +3,16 @@
 ROOT_PATH=""
 TOUCH_PATH=""
 FORCE=0
+PULL_ONLY=0
 
-while getopts r:t:f: option
+while getopts r:t:f:p: option
 do
     case "${option}"
     in
         r) ROOT_PATH=${OPTARG};;
         t) TOUCH_PATH=${OPTARG};;
         f) FORCE=${OPTARG};;
+        p) PULL_ONLY=${OPTARG};;
     esac
 done
 
@@ -38,8 +40,10 @@ fi
 
 cd "$ROOT_PATH" || say_error || exit 1
 git pull || say_error || exit 1
-git commit -a -m 'phone updates'
-git push || say_error || exit 1
+if [ "$PULL_ONLY" -eq 0 ]; then
+    git commit -a -m 'phone updates'
+    git push || say_error || exit 1
+fi
 touch "$TOUCH_PATH"
 say_ok
 exit 0
