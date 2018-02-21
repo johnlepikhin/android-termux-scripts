@@ -17,18 +17,14 @@ do
 done
 
 if [ -z "$ROOT_PATH" ]; then
-    echo "-r expected"
-    say_error
+    say_error "-r expected"
     exit 1
 fi
 
 if [ -z "$TOUCH_PATH" ]; then
-    echo "-t expected"
-    say_error
+    say_error "-t expected"
     exit 1
 fi
-
-. ~/.bashrc
 
 if [ -e "$TOUCH_PATH" ]; then 
     find "$ROOT_PATH" -newer "$TOUCH_PATH" | egrep -q '.*'
@@ -37,17 +33,28 @@ else
     NO_NEW_FILES=0
 fi
 
-if [ "$NO_NEW_FILES" -eq 1 ] && [ "$FORCE" -eq 0 ]; then
-    say_ok;
-    exit 0;
+cd "$ROOT_PATH"
+if [ "$?" -gt 0 ]; then
+    say_error "Cannot cd to '$ROOT_PATH'"
+    exit 1
 fi
 
-cd "$ROOT_PATH" || say_error || exit 1
-git pull || say_error || exit 1
-if [ "$PULL_ONLY" -eq 0 ]; then
+if [ "$NO_NEW_FILES" -eq 0 ] || [ "$FORCE" -gt 0 ]; then
+    git pull
+    if [ "$?" -gt 0 ]; then
+        say_error "Cannot pull"
+        exit 1
+    fi
+fi
+
+if [ "$NO_NEW_FILES" -eq 0 ] && [ "$PULL_ONLY" -eq 0 ]; then
     git add .
     git commit -a -m 'phone updates'
-    git push || say_error || exit 1
+    git push
+    if [ "$?" -gt 0 ]; then
+        say_error "Cannot push"
+        exit 1
+    fi
 fi
 touch "$TOUCH_PATH"
 say_ok
