@@ -24,7 +24,7 @@ if [ "$?" -gt 0 ]; then
 fi
 
 
-if [ "$PULL_ONLY" -ne 0 ]; then
+if [ "$PULL_ONLY" -eq 0 ]; then
     git diff --exit-code >/dev/null 2>&1
     if [ "$?" -gt 0 ]; then
         git commit -a -m 'phone updates'
@@ -41,7 +41,7 @@ if [ "$?" -gt 0 ]; then
     exit 1
 fi
 
-if [ "$PULL_ONLY" -ne 0 ]; then
+if [ "$PULL_ONLY" -eq 0 ]; then
     git push
     if [ "$?" -gt 0 ]; then
         "$SHELL" say_error "Cannot push"
