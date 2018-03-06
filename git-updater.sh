@@ -11,34 +11,36 @@ do
 done
 
 if [ -z "$ROOT_PATH" ]; then
-    say_error "-r expected"
+    "$SHELL" say_error "-r expected"
     exit 1
 fi
 
 cd "$ROOT_PATH"
 if [ "$?" -gt 0 ]; then
-    say_error "Cannot cd to '$ROOT_PATH'"
+    "$SHELL" say_error "Cannot cd to '$ROOT_PATH'"
     exit 1
 fi
 
-git add .
-git commit -a -m 'phone updates'
+git diff --exit-code >/dev/null 2>&1
 if [ "$?" -gt 0 ]; then
-    say_error "Cannot commit"
-    exit 1
+    git commit -a -m 'phone updates'
+    if [ "$?" -gt 0 ]; then
+        "$SHELL" say_error "Cannot commit"
+        exit 1
+    fi
 fi
-
+    
 git pull
 if [ "$?" -gt 0 ]; then
-    say_error "Cannot pull"
+    "$SHELL" say_error "Cannot pull"
     exit 1
 fi
 
 git push
 if [ "$?" -gt 0 ]; then
-    say_error "Cannot push"
+    "$SHELL" say_error "Cannot push"
     exit 1
 fi
 
-say_ok
+"$SHELL" say_ok
 exit 0
