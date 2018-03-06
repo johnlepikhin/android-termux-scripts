@@ -1,12 +1,14 @@
 #! /data/data/com.termux/files/usr/bin/bash
 
 ROOT_PATH=""
+PULL_ONLY=0
 
-while getopts r: option
+while getopts r:p: option
 do
     case "${option}"
     in
         r) ROOT_PATH=${OPTARG};;
+        p) PULL_ONLY=${OPTARG};;
     esac
 done
 
@@ -21,12 +23,15 @@ if [ "$?" -gt 0 ]; then
     exit 1
 fi
 
-git diff --exit-code >/dev/null 2>&1
-if [ "$?" -gt 0 ]; then
-    git commit -a -m 'phone updates'
+
+if [ "$PULL_ONLY" -ne 0 ]; then
+    git diff --exit-code >/dev/null 2>&1
     if [ "$?" -gt 0 ]; then
-        "$SHELL" say_error "Cannot commit"
-        exit 1
+        git commit -a -m 'phone updates'
+        if [ "$?" -gt 0 ]; then
+            "$SHELL" say_error "Cannot commit"
+            exit 1
+        fi
     fi
 fi
     
