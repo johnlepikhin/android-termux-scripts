@@ -41,10 +41,12 @@ if [ "$?" -gt 0 ]; then
     exit 1
 fi
 
-git push
-if [ "$?" -gt 0 ]; then
-    "$SHELL" say_error "Cannot push"
-    exit 1
+if [ "$PULL_ONLY" -ne 0 ]; then
+    git push
+    if [ "$?" -gt 0 ]; then
+        "$SHELL" say_error "Cannot push"
+        exit 1
+    fi
 fi
 
 "$SHELL" say_ok
