@@ -25,12 +25,11 @@ if [ "$?" -gt 0 ]; then
     exit 1
 fi
 
-
 if [ "$PULL_ONLY" -eq 0 ]; then
     git diff --exit-code >/dev/null 2>&1
     if [ "$?" -gt 0 ]; then
-        git add -A
-        git commit -a -m "$COMMENT"
+        git add --ignore-removal .
+        git commit -m "$COMMENT"
         if [ "$?" -gt 0 ]; then
             "$SHELL" say_error "Cannot commit"
             exit 1
