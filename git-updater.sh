@@ -26,8 +26,8 @@ if [ "$?" -gt 0 ]; then
 fi
 
 if [ "$PULL_ONLY" -eq 0 ]; then
-    git diff --exit-code >/dev/null 2>&1
-    if [ "$?" -gt 0 ]; then
+    git add -A -n | grep -q '' >/dev/null 2>&1
+    if [ "$?" -eq 0 ]; then
         git add --ignore-removal .
         git commit -m "$COMMENT"
         if [ "$?" -gt 0 ]; then
