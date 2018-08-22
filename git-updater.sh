@@ -51,5 +51,8 @@ if [ "$PULL_ONLY" -eq 0 ]; then
     fi
 fi
 
+command -v am \
+    && am broadcast -a com.orgzly.intent.action.SYNC_START com.orgzly/.android.ActionReceiver
+
 "$SHELL" say_ok
 exit 0
