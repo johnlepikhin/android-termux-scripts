@@ -29,6 +29,8 @@ if [ "$?" -gt 0 ]; then
     exit 1
 fi
 
+find "$ROOT_PATH/.git/index.lock" -mmin +20 -delete
+
 if [ "$PULL_ONLY" -eq 0 ]; then
     git add -A -n | grep -q '' >/dev/null 2>&1
     if [ "$?" -eq 0 ]; then
