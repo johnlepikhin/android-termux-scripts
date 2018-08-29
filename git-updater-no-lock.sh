@@ -34,9 +34,13 @@ if [ "$PULL_ONLY" -eq 0 ]; then
     if [ "$?" -eq 0 ]; then
         git add --ignore-removal .
         git commit -m "$COMMENT"
-        if [ "$?" -gt 0 ]; then
-            "$SHELL" say_error "Cannot commit"
-            exit 1
+        RC_COMMIT=$?
+        echo "git commit returned $RC_COMMIT"
+        if [ "$RC_COMMIT" -gt 0 ]; then
+            git status --porcelain | cut -d' ' -f2 | grep -qv D && (
+                "$SHELL" say_error "Cannot commit"
+                exit 1
+            )
         fi
     fi
 fi
