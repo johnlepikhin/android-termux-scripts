@@ -35,10 +35,10 @@ if [ "$PULL_ONLY" -eq 0 ]; then
         git add --ignore-removal .
         git commit -m "$COMMENT"
         RC_COMMIT=$?
-        echo "git commit returned $RC_COMMIT"
         if [ "$RC_COMMIT" -gt 0 ]; then
+            echo "WARNING: git commit returned $RC_COMMIT"
             git status --porcelain | cut -d' ' -f2 | grep -qv D && (
-                "$SHELL" say_error "Cannot commit"
+                "$SHELL" say_error "Cannot commit: unstaged changes and this is not deletes"
                 exit 1
             )
         fi
