@@ -13,5 +13,9 @@ if [ -z "$ROOT_PATH" ]; then
     exit 1
 fi
 
-flock -w30 "$ROOT_PATH/.git/git-updater.lock" "$SHELL" "git-updater-no-lock.sh" $@
+FLOCK_FILE="$ROOT_PATH/.git/git-updater.lock"
+
+find "$FLOCK_FILE" -type f -mmin +20 -delete
+
+flock -n "$FLOCK_FILE" "$SHELL" "git-updater-no-lock.sh" $@
 exit $?
