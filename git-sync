@@ -322,6 +322,7 @@ case "$(sync_state)" in
 	echo "git-sync: We are behind, fast-forwarding..."
 	git merge --ff --ff-only $remote_name/$branch_name
 	if [ $? == 0 ]; then
+	    command -v am && notify-orgzly
 	    exit_assuming_sync
 	else
 	    echo "git-sync: git merge --ff --ff-only returned non-zero ($?). Exiting."
