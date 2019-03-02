@@ -17,5 +17,5 @@ FLOCK_FILE="$ROOT_PATH/.git/git-updater.lock"
 
 find "$FLOCK_FILE" -type f -mmin +20 -delete >/dev/null 2>&1
 
-cd "$ROOT_PATH" && flock -n "$FLOCK_FILE" "$SHELL" "git-sync" $@
+cd "$ROOT_PATH" && flock -n "$FLOCK_FILE" "$SHELL" "git-sync"
 exit $?

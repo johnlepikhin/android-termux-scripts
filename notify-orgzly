@@ -1,0 +1,3 @@
+#! /data/data/com.termux/files/usr/bin/bash
+
+am broadcast -a com.orgzly.intent.action.SYNC_START com.orgzly/.android.ActionReceiver
