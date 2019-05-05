@@ -1,5 +1,7 @@
 #! /data/data/com.termux/files/usr/bin/bash
 
+export PATH="~/bin:~/bin/phone-shared:$PATH"
+
 while getopts r:p:c:s: option
 do
     case "${option}"
